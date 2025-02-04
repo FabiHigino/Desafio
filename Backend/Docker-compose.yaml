@@ -1,0 +1,7 @@
+services:
+
+  api:
+    image: "oseniasjunior/api-task"
+    ports:
+      - "8000:8000"
+    command: /bin/sh -c "python -u manage.py migrate \&& gunicorn DesafioAngularBackend.wsgi -b :8000"
