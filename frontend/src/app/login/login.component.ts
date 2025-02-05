@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
 import { Router, RouterLink } from "@angular/router";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  standalone: true, // 🔥 Permite rodar sem app.module.ts
+  standalone: true, // 🔥 Standalone sem app.module.ts
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   imports: [
@@ -18,38 +18,49 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
     RouterLink
   ]
 })
 export class LoginComponent {
   loginFormulario: FormGroup;
+  cadastroFormulario: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router
   ) {
+    // 🔹 Inicializa o formulário de Login
     this.loginFormulario = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    // 🔹 Inicializa o formulário de Cadastro
+    this.cadastroFormulario = this.fb.group({
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  onSubmit(): void {
+  // 🔹 Login: Redireciona para a Grade
+  onLogin(): void {
     if (this.loginFormulario.valid) {
-      const email = this.loginFormulario.value.email;
+      console.log('Login efetuado!');
+      this.router.navigate(['/grade']);
+    } else {
+      alert('Preencha todos os campos corretamente!');
+    }
+  }
 
-      this.http.get<any[]>('http://localhost:8000/api/users/').subscribe({
-        next: (users) => {
-          const userExists = users.some(user => user.email === email);
-
-          if (userExists) {
-            console.log('Login bem-sucedido!');
-            this.router.navigate(['/grade']); // 🔹 Redireciona para a GradeComponent
-          } else {
-            console.error('Email não encontrado');
-          }
-        },
-      });
+  // 🔹 Cadastro: Apenas exibe uma mensagem por enquanto
+  onCadastrar(): void {
+    if (this.cadastroFormulario.valid) {
+      console.log('Cadastro efetuado!', this.cadastroFormulario.value);
+      alert("Cadastro realizado com sucesso!");
+    } else {
+      alert('Preencha todos os campos corretamente!');
     }
   }
 }

@@ -1,17 +1,39 @@
-.formulario-login {
+/* 🔹 Estiliza o container principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔹 Centraliza tudo */
+  justify-content: center;
+  height: 100vh; /* 🔹 Garante que ocupe a tela inteira */
+}
+
+/* 🔹 Alinha os formulários lado a lado */
+.form-container {
+  display: flex;
+  gap: 40px; /* 🔹 Espaço entre os formulários */
+}
+
+/* 🔹 Estiliza a caixa do formulário */
+.form-box {
   max-width: 400px;
-  margin: 50px auto;
+  width: 100%;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
+/* 🔹 Centraliza os títulos */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
 }
 
+/* 🔹 Estiliza os botões */
 button {
-  width: 100%;
-  margin-top: 16px;
+  width: 100%; /* 🔹 O botão ocupa toda a largura do formulário */
+  margin-top: 16px; /* 🔹 Espaçamento entre os campos e o botão */
 }

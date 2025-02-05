@@ -1,37 +1,52 @@
-<form [formGroup]="loginFormulario" (ngSubmit)="onSubmit()" class="formulario-login">
-  <!-- Campo de E-mail -->
-  <mat-form-field appearance="fill">
-    <mat-label>E-mail</mat-label>
-    <input matInput formControlName="email" type="email" placeholder="Ex.: usuario@exemplo.com">
-    @if (loginFormulario.get('email')?.errors) {
-      <mat-error>
-        @if (loginFormulario.get('email')?.hasError('required')) {
-          O e-mail é obrigatório.
-        } @else if (loginFormulario.get('email')?.hasError('email')) {
-          Por favor, insira um e-mail válido.
-        }
-      </mat-error>
-    }
-  </mat-form-field>
+<!-- 🔹 Container Principal -->
+<div class="container">
 
-  <!-- Campo de Senha -->
-  <mat-form-field appearance="fill">
-    <mat-label>Senha</mat-label>
-    <input matInput formControlName="senha" type="password" required>
-    @if (loginFormulario.get('senha')?.errors) {
-      <mat-error>
-        @if (loginFormulario.get('senha')?.hasError('required')) {
-          A senha é obrigatória.
-        } @else if (loginFormulario.get('senha')?.hasError('minlength')) {
-          A senha deve ter pelo menos 6 caracteres.
-        }
-      </mat-error>
-    }
-  </mat-form-field>
+  <!-- 🔹 Formulários lado a lado -->
+  <div class="form-container">
 
-  <!-- Botão de Cadastro -->
-  <button mat-button routerLink="/cadastro">Cadastrar</button>
+    <!-- 🔹 Login -->
+    <div class="form-box">
+      <h2>Login</h2>
+      <form [formGroup]="loginFormulario" (ngSubmit)="onLogin()" class="formulario-login">
+        <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="Digite seu e-mail">
+        </mat-form-field>
 
-  <!-- Botão de Enviar -->
-  <button mat-raised-button color="primary" type="submit" [disabled]="loginFormulario.invalid">Entrar</button>
-</form>
+        <mat-form-field appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="senha" type="password" placeholder="Digite sua senha">
+        </mat-form-field>
+
+        <!-- 🔹 Botão de Login -->
+        <button mat-raised-button color="primary" type="submit">Entrar</button>
+      </form>
+    </div>
+
+    <!-- 🔹 Cadastro -->
+    <div class="form-box">
+      <h2>Cadastro</h2>
+      <form [formGroup]="cadastroFormulario" (ngSubmit)="onCadastrar()" class="formulario-cadastro">
+        <mat-form-field appearance="fill">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" type="text" placeholder="Digite seu nome">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="Digite seu e-mail">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="senha" type="password" placeholder="Crie uma senha">
+        </mat-form-field>
+
+        <!-- 🔹 Botão de Cadastro -->
+        <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+      </form>
+    </div>
+
+  </div>
+
+</div>
