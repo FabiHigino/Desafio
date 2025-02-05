@@ -1,58 +1,33 @@
 <div class="container">
   <h2>Gerenciador de Tasks</h2>
 
-  <!-- Formulário para adicionar/editar tasks -->
-  <div class="add-task-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Título</mat-label>
-      <input matInput formControlName="title">
-    </mat-form-field>
+  <!-- Componente de Adicionar Task -->
+  <app-add-task (taskAdded)="loadTasks()"></app-add-task>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Descrição</mat-label>
-      <input matInput formControlName="description">
-    </mat-form-field>
+  <!-- Lista de Tasks -->
+  <div class="task-list">
+    <mat-card *ngFor="let task of tasks">
+      <mat-card-title>{{ task.title }}</mat-card-title>
+      <mat-card-content>
+        <p>{{ task.description }}</p>
 
-    <button mat-raised-button color="primary" (click)="saveTask()">
-      {{ editingTask ? 'Editar Task' : 'Adicionar Task' }}
-    </button>
-  </div>
+        <!-- 🔹 Seção de Comentários -->
+        <h4>Comentários:</h4>
+        <ul>
+          <li *ngFor="let comment of task.comments">{{ comment }}</li>
+        </ul>
+        <input [(ngModel)]="newComment[task.id]" placeholder="Adicionar comentário">
+        <button mat-button (click)="addComment(task)">Adicionar</button>
 
-  <!-- Grade de Tasks -->
-  <div class="kanban">
-    <div class="column">
-      <h3>To Do</h3>
-      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'To Do'">
-        <mat-card>
-          <mat-card-title>{{ task?.title }}</mat-card-title>
-          <mat-card-content>{{ task?.description }}</mat-card-content>
-          <mat-card-actions>
-            <button mat-icon-button (click)="editTask(task)">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
+        <!-- 🔹 Seção de Horas Trabalhadas -->
+        <h4>Horas Trabalhadas:</h4>
+        <ul>
+          <li *ngFor="let hour of task.hoursWorked">{{ hour }} horas</li>
+        </ul>
+        <input type="number" [(ngModel)]="newHours[task.id]" placeholder="Horas">
+        <button mat-button (click)="addHours(task)">Adicionar</button>
 
-    <div class="column">
-      <h3>In Progress</h3>
-      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'In Progress'">
-        <mat-card>
-          <mat-card-title>{{ task?.title }}</mat-card-title>
-          <mat-card-content>{{ task?.description }}</mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-
-    <div class="column">
-      <h3>Done</h3>
-      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'Done'">
-        <mat-card>
-          <mat-card-title>{{ task?.title }}</mat-card-title>
-          <mat-card-content>{{ task?.description }}</mat-card-content>
-        </mat-card>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

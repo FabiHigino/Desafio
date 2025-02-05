@@ -2,27 +2,20 @@
   text-align: center;
 }
 
-.add-task-form {
-  margin-bottom: 20px;
+.task-list {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 10px;
-  justify-content: center;
 }
 
-.kanban {
-  display: flex;
-  justify-content: space-around;
-}
-
-.column {
-  width: 30%;
+mat-card {
+  width: 300px;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #f9f9f9;
-  min-height: 300px;
 }
 
-.task {
-  margin: 10px 0;
+input {
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px;
 }

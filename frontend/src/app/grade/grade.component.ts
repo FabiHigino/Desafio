@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { AddTaskComponent } from '../add-task/add-task.component';
 
-// 🔹 Definição do tipo Task para evitar erros de tipagem
+// 🔹 Definição do tipo Task
 interface Task {
   id: number;
   title: string;
   description: string;
   status: string;
+  comments: string[]; // 🔹 Comentários como array
+  hoursWorked: number[]; // 🔹 Horas trabalhadas como array
 }
 
 @Component({
@@ -22,84 +24,68 @@ interface Task {
   styleUrls: ['./grade.component.css'],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     HttpClientModule,
     MatCardModule,
     MatButtonModule,
     MatInputModule,
-    MatIconModule
+    FormsModule,
+    AddTaskComponent
   ]
 })
 export class GradeComponent implements OnInit {
-  taskForm: FormGroup;
-  tasks: { id: number, title: string, description: string, status: string }[] = [];
-  apiUrl = 'http://localhost:8000/api/tasks/'; // 🔹 Endpoint da API de Tasks
-  editingTask: Task | null = null; // 🔹 Task que está sendo editada
+  tasks: Task[] = []; // 🔹 Lista de tasks
+  apiUrl = 'http://localhost:8000/api/tasks/'; // 🔹 Endpoint da API
+  newComment: { [taskId: number]: string } = {}; // 🔹 Armazena comentários temporários
+  newHours: { [taskId: number]: number } = {}; // 🔹 Armazena horas temporárias
 
-  constructor(
-    private fb: FormBuilder,
-    private http: HttpClient
-  ) {
-    this.taskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['']
-    });
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
-  // 🔹 Carrega as tasks do backend
+  // 🔹 Carrega as tasks do backend e transforma os dados em arrays
   loadTasks(): void {
     this.http.get<Task[]>(this.apiUrl).subscribe({
       next: (data) => {
-        console.log('Tasks carregadas:', data); // 🔹 Verifique os dados no console
-        this.tasks = data;
+        console.log('Tasks carregadas:', data);
+        this.tasks = data.map(task => ({
+          ...task,
+          comments: task.comments || [], // 🔹 Garante que sempre seja um array
+          hoursWorked: task.hoursWorked || [] // 🔹 Garante que sempre seja um array
+        }));
       },
       error: (err) => console.error('Erro ao carregar tasks:', err)
     });
   }
 
-  // 🔹 Adiciona ou edita uma task na raia "To Do"
-  saveTask(): void {
-    if (this.taskForm.valid) {
-      const taskData: Task = {
-        id: this.editingTask ? this.editingTask.id : 0,
-        title: this.taskForm.value.title,
-        description: this.taskForm.value.description,
-        status: 'To Do'
-      };
+  // 🔹 Adiciona um comentário a uma task
+  addComment(task: Task): void {
+    if (this.newComment[task.id]?.trim()) {
+      task.comments.push(this.newComment[task.id]); // 🔹 Adiciona o comentário ao array
 
-      if (this.editingTask) {
-        // 🔹 Atualiza a task existente
-        this.http.put(`${this.apiUrl}${this.editingTask.id}/`, taskData).subscribe({
-          next: () => {
-            this.tasks = this.tasks.map(task => task.id === this.editingTask?.id ? taskData : task);
-            this.editingTask = null;
-            this.taskForm.reset();
-          },
-          error: (err) => console.error('Erro ao editar task:', err)
-        });
-      } else {
-        // 🔹 Adiciona uma nova task ao backend
-        this.http.post<Task>(this.apiUrl, taskData).subscribe({
-          next: (task) => {
-            this.tasks.push(task);
-            this.taskForm.reset();
-          },
-          error: (err) => console.error('Erro ao adicionar task:', err)
-        });
-      }
+      this.http.put(`${this.apiUrl}${task.id}/`, task).subscribe({
+        next: () => {
+          console.log('Comentário adicionado.');
+          this.newComment[task.id] = ''; // 🔹 Limpa o input
+        },
+        error: (err) => console.error('Erro ao adicionar comentário:', err)
+      });
     }
   }
 
-  // 🔹 Edita uma task existente
-  editTask(task: Task): void {
-    this.editingTask = task;
-    this.taskForm.patchValue({
-      title: task.title,
-      description: task.description
-    });
+  // 🔹 Adiciona horas trabalhadas a uma task
+  addHours(task: Task): void {
+    if (this.newHours[task.id] > 0) {
+      task.hoursWorked.push(this.newHours[task.id]); // 🔹 Adiciona as horas ao array
+
+      this.http.put(`${this.apiUrl}${task.id}/`, task).subscribe({
+        next: () => {
+          console.log('Horas adicionadas.');
+          this.newHours[task.id] = 0; // 🔹 Limpa o input
+        },
+        error: (err) => console.error('Erro ao adicionar horas:', err)
+      });
+    }
   }
 }

@@ -1,1 +1,17 @@
-<p>add-task works!</p>
+<div class="add-task-container">
+  <h3>Adicionar Nova Task</h3>
+
+  <form [formGroup]="taskForm" (ngSubmit)="addTask()">
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Adicionar</button>
+  </form>
+</div>
