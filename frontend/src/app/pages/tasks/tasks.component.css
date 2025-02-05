@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: row; /* Alinha as raias horizontalmente */
   justify-content: space-between; /* Espaçamento entre as raias */
-  height: 100vh; /* Altura total da tela */
+  height: 95vh; /* Altura total da tela */
+  justify-content: center;
+  padding-top: 15px;
 }
 
 .lane {

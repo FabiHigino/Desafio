@@ -1,29 +1,32 @@
-<p>user-dashboard works!</p>
-<h1>👤 Gerenciamento de Usuários</h1>
-
-<!-- Exibir quantidade de usuários -->
-<p>Total de Usuários Cadastrados: <strong>{{ totalUsers }}</strong></p>
-
 <div class="container">
+  <h1> Gerenciamento de Usuários</h1>
 
+  <p>Total de Usuários Cadastrados: <strong>{{ totalUsers }}</strong></p>
 
-  <!-- Formulário de Cadastro -->
-  <div class="box">
-    <h2>➕ Criar Novo Usuário</h2>
-    <form (submit)="registerUser()">
-      <label>Usuário:</label>
-      <input type="text" [(ngModel)]="registerData.username" name="username" required>
+  <div class="container">
+    <div class="box">
+      <h2>Criar Novo Usuário</h2>
+      <form (ngSubmit)="registerUser()">
 
-      <label>Email:</label>
-      <input type="email" [(ngModel)]="registerData.email" name="email" required>
+        <mat-form-field appearance="fill">
+          <mat-label>Usuário</mat-label>
+          <input matInput type="text" [(ngModel)]="registerData.username" name="username" required>
+        </mat-form-field>
 
-      <label>Senha:</label>
-      <input type="password" [(ngModel)]="registerData.password" name="password" required>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="registerData.email" name="email" required>
+        </mat-form-field>
 
-      <button type="submit">Cadastrar</button>
-    </form>
+        <mat-form-field appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" [(ngModel)]="registerData.password" name="password" required>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Exibir mensagem de erro -->
-<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>

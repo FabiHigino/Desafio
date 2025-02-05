@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
+import {MatButton} from '@angular/material/button';
+import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    MatButton,
+    MatFormField,
+    MatInput,
+    MatFormFieldModule,
   ],
   styleUrls: ['./user-dashboard.component.css']
 })
