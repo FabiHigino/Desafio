@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from "@angular/router";
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +20,8 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    RouterLink
+    RouterLink,
+    HttpClientModule // 🔹 Importa o módulo HTTP para fazer requisições
   ]
 })
 export class LoginComponent {
@@ -28,7 +30,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private http: HttpClient // 🔹 Injeta o serviço HttpClient para requisições
   ) {
     // 🔹 Inicializa o formulário de Login
     this.loginFormulario = this.fb.group({
@@ -54,11 +57,34 @@ export class LoginComponent {
     }
   }
 
-  // 🔹 Cadastro: Apenas exibe uma mensagem por enquanto
+  // 🔹 Cadastro: Envia os dados para a API e retorna à tela de login
   onCadastrar(): void {
     if (this.cadastroFormulario.valid) {
-      console.log('Cadastro efetuado!', this.cadastroFormulario.value);
-      alert("Cadastro realizado com sucesso!");
+      const dadosCadastro = {
+        username: this.cadastroFormulario.value.nome, // 🔹 Alterado para "username"
+        email: this.cadastroFormulario.value.email,
+        password: this.cadastroFormulario.value.senha // 🔹 Alterado para "password"
+      };
+
+      // 🔹 Faz a requisição POST para salvar os dados no backend
+      this.http.post('http://localhost:8000/api/users/', dadosCadastro).subscribe({
+        next: (res) => {
+          console.log('Cadastro realizado com sucesso:', res);
+          alert("Cadastro realizado com sucesso! Agora faça login para continuar.");
+          this.cadastroFormulario.reset(); // 🔹 Limpa o formulário após o cadastro
+        },
+        error: (err) => {
+          console.error('Erro ao cadastrar:', err);
+
+          // 🔹 Exibe o erro retornado pelo backend no alert
+          if (err.status === 400) {
+            alert("Erro ao cadastrar: " + JSON.stringify(err.error));
+          } else {
+            alert("Erro ao cadastrar. Verifique sua conexão e tente novamente.");
+          }
+        }
+      });
+
     } else {
       alert('Preencha todos os campos corretamente!');
     }
