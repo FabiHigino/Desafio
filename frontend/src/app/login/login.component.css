@@ -18,7 +18,7 @@
   max-width: 400px;
   width: 100%;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #fdf9f9;
   border-radius: 8px;
   text-align: center;
   background: #fff;
@@ -32,8 +32,28 @@ h2 {
   font-size: 24px;
 }
 
+/* 🔹 Estiliza os inputs */
+mat-form-field {
+  width: 100%;
+}
+
+/* 🔹 Efeito hover para os inputs */
+mat-form-field:hover,
+mat-form-field:focus-within {
+  background-color: #a5d6a7; /* 🔹 Verde médio */
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
 /* 🔹 Estiliza os botões */
 button {
   width: 100%; /* 🔹 O botão ocupa toda a largura do formulário */
   margin-top: 16px; /* 🔹 Espaçamento entre os campos e o botão */
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* 🔹 Efeito hover para os botões */
+button:hover {
+  background-color: #66bb6a !important; /* 🔹 Verde médio */
+  color: white;
 }
