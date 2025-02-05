@@ -2,6 +2,13 @@
   text-align: center;
 }
 
+.add-task-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
 .task-list {
   display: flex;
   flex-direction: column;

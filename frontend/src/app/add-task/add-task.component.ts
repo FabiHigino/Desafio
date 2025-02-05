@@ -5,6 +5,14 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 
+// 🔹 Definição do tipo Task
+interface Task {
+  id?: number;
+  title: string;
+  description: string;
+  status: string;
+}
+
 @Component({
   selector: 'app-add-task',
   standalone: true,
@@ -16,7 +24,7 @@ export class AddTaskComponent {
   taskForm: FormGroup;
   apiUrl = 'http://localhost:8000/api/tasks/'; // 🔹 Endpoint da API
 
-  @Output() taskAdded = new EventEmitter<void>(); // 🔹 Dispara evento para atualizar a Grade
+  @Output() taskAdded = new EventEmitter<void>(); // 🔹 Evento para atualizar a Grade
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +39,7 @@ export class AddTaskComponent {
   // 🔹 Envia a nova task para a API
   addTask(): void {
     if (this.taskForm.valid) {
-      const taskData = {
+      const taskData: Task = {
         title: this.taskForm.value.title,
         description: this.taskForm.value.description,
         status: 'To Do'
@@ -39,8 +47,9 @@ export class AddTaskComponent {
 
       this.http.post(this.apiUrl, taskData).subscribe({
         next: () => {
+          console.log('Task adicionada.');
           this.taskForm.reset(); // 🔹 Limpa o formulário
-          this.taskAdded.emit(); // 🔹 Notifica o `GradeComponent` para atualizar a lista
+          this.taskAdded.emit(); // 🔹 Notifica `GradeComponent` para atualizar a lista
         },
         error: (err) => console.error('Erro ao adicionar task:', err)
       });
