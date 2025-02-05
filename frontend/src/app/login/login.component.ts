@@ -34,7 +34,6 @@ export class LoginComponent {
     });
   }
 
-  // quando concluir o formulário 👌
   onSubmit(): void {
     if (this.loginFormulario.valid) {
       const email = this.loginFormulario.value.email;
@@ -44,8 +43,8 @@ export class LoginComponent {
           const userExists = users.some(user => user.email === email);
 
           if (userExists) {
-            console.log('Email válido!');
-            this.router.navigate(['/quadro']);
+            console.log('Login bem-sucedido!');
+            this.router.navigate(['/grade']); // 🔹 Redireciona para a GradeComponent
           } else {
             console.error('Email não encontrado');
           }

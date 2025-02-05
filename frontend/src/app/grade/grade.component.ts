@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-grade',
-  imports: [],
-  standalone: true,
+  standalone: true, // 🔥 Permite carregar sem app.module.ts
   templateUrl: './grade.component.html',
-  styleUrl: './grade.component.css'
+  styleUrls: ['./grade.component.css'],
+  imports: [CommonModule]
 })
-export class GradeComponent {
-
-}
+export class GradeComponent { }
