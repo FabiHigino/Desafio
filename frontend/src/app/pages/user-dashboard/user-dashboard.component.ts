@@ -1,69 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common'; // Import NgFor
-import { MatButtonModule } from '@angular/material/button'; // Import Material Button
-import { MatListModule } from '@angular/material/list';   // Import Material List
-import { MatInputModule } from '@angular/material/input'; // Import Material Input
-import { MatFormFieldModule } from '@angular/material/form-field'; // Import Material Form Field
-import {MatCardModule} from '@angular/material/card';
-
+import {UsersService} from '../../services/users.service';
+import {FormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.css'],
   imports: [
     FormsModule,
-    NgIf,
-    NgFor,
-    MatButtonModule,
-    MatListModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatCardModule
+    NgIf
   ],
+  styleUrls: ['./user-dashboard.component.css']
 })
 export class UserDashboardComponent implements OnInit {
   totalUsers: number = 0;
   errorMessage: string = '';
+
   registerData = { username: '', email: '', password: '' };
 
-  showNames: boolean = false;
-  userNames: any[] = [];
-
-  constructor(private usersService: UsersService, private router: Router) {}
+  constructor(private usersService: UsersService) {}
 
   ngOnInit() {
     this.getUserCount();
   }
 
+  // Obter total de usuários cadastrados
   getUserCount() {
     this.usersService.getUsers().subscribe(
-      (users) => (this.totalUsers = users.length),
-      (error) => (this.errorMessage = 'Erro ao carregar usuários')
+      (users) => this.totalUsers = users.length,
+      (error) => this.errorMessage = 'Erro ao carregar usuários'
     );
   }
 
+
+  // Cadastro de novo usuário
   registerUser() {
+    console.log('Cadastro:', this.registerData);
+
     this.usersService.register(this.registerData).subscribe(
       (response) => {
         alert('Usuário cadastrado com sucesso!');
-        this.getUserCount();
-        this.registerData = { username: '', email: '', password: '' }; // Limpa o formulário
+        this.getUserCount(); // Atualiza o contador de usuários
       },
-      (error) => (this.errorMessage = 'Erro ao cadastrar usuário')
+      (error) => {
+        this.errorMessage = 'Erro ao cadastrar usuário';
+        console.error('Erro no cadastro:', error);
+      }
     );
   }
 
-  showUserNames() {
-    this.usersService.getUsers().subscribe(
-      (users) => {
-        this.userNames = users;
-        this.showNames = true;
-      },
-      (error) => (this.errorMessage = 'Erro ao carregar usuários')
-    );
-  }
 }

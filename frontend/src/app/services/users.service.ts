@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsersService {
-  private apiUrl = 'http://localhost:8000/api/users/'; // Endpoint de usuários
+  private apiUrl = 'http://localhost:8000/api/users/';
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +17,7 @@ export class UsersService {
 
   // Cadastrar usuário
   register(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(this.apiUrl, data, { headers });
   }
 }
