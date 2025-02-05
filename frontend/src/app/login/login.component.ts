@@ -1,12 +1,56 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from "@angular/common/http";
+import { Router, RouterLink } from "@angular/router";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [],
-  standalone: true,
+  standalone: true, // 🔥 Permite rodar sem app.module.ts
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterLink
+  ]
 })
 export class LoginComponent {
+  loginFormulario: FormGroup;
 
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {
+    this.loginFormulario = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
+
+  // quando concluir o formulário 👌
+  onSubmit(): void {
+    if (this.loginFormulario.valid) {
+      const email = this.loginFormulario.value.email;
+
+      this.http.get<any[]>('http://localhost:8000/api/users/').subscribe({
+        next: (users) => {
+          const userExists = users.some(user => user.email === email);
+
+          if (userExists) {
+            console.log('Email válido!');
+            this.router.navigate(['/quadro']);
+          } else {
+            console.error('Email não encontrado');
+          }
+        },
+      });
+    }
+  }
 }

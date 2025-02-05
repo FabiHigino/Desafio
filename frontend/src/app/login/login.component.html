@@ -1,1 +1,37 @@
-<p>login works!</p>
+<form [formGroup]="loginFormulario" (ngSubmit)="onSubmit()" class="formulario-login">
+  <!-- Campo de E-mail -->
+  <mat-form-field appearance="fill">
+    <mat-label>E-mail</mat-label>
+    <input matInput formControlName="email" type="email" placeholder="Ex.: usuario@exemplo.com">
+    @if (loginFormulario.get('email')?.errors) {
+      <mat-error>
+        @if (loginFormulario.get('email')?.hasError('required')) {
+          O e-mail é obrigatório.
+        } @else if (loginFormulario.get('email')?.hasError('email')) {
+          Por favor, insira um e-mail válido.
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Campo de Senha -->
+  <mat-form-field appearance="fill">
+    <mat-label>Senha</mat-label>
+    <input matInput formControlName="senha" type="password" required>
+    @if (loginFormulario.get('senha')?.errors) {
+      <mat-error>
+        @if (loginFormulario.get('senha')?.hasError('required')) {
+          A senha é obrigatória.
+        } @else if (loginFormulario.get('senha')?.hasError('minlength')) {
+          A senha deve ter pelo menos 6 caracteres.
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Botão de Cadastro -->
+  <button mat-button routerLink="/cadastro">Cadastrar</button>
+
+  <!-- Botão de Enviar -->
+  <button mat-raised-button color="primary" type="submit" [disabled]="loginFormulario.invalid">Entrar</button>
+</form>
