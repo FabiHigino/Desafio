@@ -1,0 +1,77 @@
+<form [formGroup]="taskForm" (ngSubmit)="addTask()">
+  <h2 mat-dialog-title>{{ isEditing ? 'Editar Tarefa' : 'Nova Tarefa' }}</h2>
+
+  <div mat-dialog-content>
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput type="text" formControlName="name" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Horas Planejadas</mat-label>
+        <input matInput type="number" formControlName="planned_hours" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" required>
+          <mat-option value="1">A fazer</mat-option>
+          <mat-option value="2">Em andamento</mat-option>
+          <mat-option value="3">Concluído</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Responsável</mat-label>
+        <mat-select formControlName="owner" required>
+          <mat-option *ngFor="let user of users" [value]="user.id">
+            {{ user.username }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isEditing">
+      <h3>Comentários</h3>
+      <div *ngFor="let comment of comments">
+        <p>{{ comment.text }} (por {{ comment.user }})</p>
+      </div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Novo comentário</mat-label>
+        <textarea matInput [(ngModel)]="newCommentText"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addComment()">Adicionar comentário</button>
+
+      <h3>Horas trabalhadas</h3>
+      <div *ngFor="let workedHour of workedHours">
+        <p>{{ workedHour.hours }} horas em {{ workedHour.date }} (por {{ workedHour.user }})</p>
+      </div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Horas trabalhadas</mat-label>
+        <input matInput type="number" [(ngModel)]="newWorkedHours">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addWorkedHours()">Adicionar horas</button>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit">Salvar</button>
+  </div>
+</form>

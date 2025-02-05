@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="lane" *ngFor="let status of ['1', '2', '3']">
+    <div class="lane-header">
+      <h2>{{ status === '1' ? 'A fazer' : status === '2' ? 'Em andamento' : 'Concluído' }}</h2>
+    </div>
+    <div class="lane-content">
+      <div *ngFor="let task of tasksByStatus[status]" class="task-card">
+        <h3>{{ task.name }}</h3>
+        <p>{{ task.description }}</p>
+        <p>Status: {{ task.status === 1 ? 'A Fazer' : task.status === 2 ? 'Em Andamento' : 'Concluído'}}</p>
+        <button mat-button color="primary" (click)="openTaskDialog(task)">Editar</button>
+        <button mat-button color="warn" (click)="deleteTask(task.id)">Excluir</button>
+      </div>
+    </div>
+  </div>
+  <button mat-fab color="primary" class="add-button" (click)="openTaskDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

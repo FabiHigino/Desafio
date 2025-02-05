@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: row; /* Alinha as raias horizontalmente */
+  justify-content: space-between; /* Espaçamento entre as raias */
+  height: 100vh; /* Altura total da tela */
+}
+
+.lane {
+  width: 32%; /* Largura de cada raia (3 raias + espaçamento = ~100%) */
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column; /* Alinha o cabeçalho e o conteúdo verticalmente */
+}
+
+.lane-header {
+  text-align: center; /* Centraliza o título da raia */
+  margin-bottom: 10px;
+}
+
+.lane-content {
+  flex-grow: 1; /* Permite que o conteúdo da raia cresça para preencher o espaço */
+  overflow-y: auto; /* Adiciona barra de rolagem se o conteúdo exceder a altura */
+}
+
+.task-card {
+  border: 1px solid #eee;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.add-button {
+  position: fixed; /* Posiciona o botão "Adicionar" */
+  bottom: 20px;
+  right: 20px;
+}

@@ -1,0 +1,41 @@
+<h1>👤 Gerenciamento de Usuários</h1>
+
+<p>Total de Usuários Cadastrados: <strong>{{ totalUsers }}</strong></p>
+
+<button mat-raised-button color="primary" (click)="showUserNames()">Mostrar Nomes de Usuários</button>
+
+<mat-card *ngIf="showNames">
+  <mat-card-title>Usuários Cadastrados</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let user of userNames">
+        {{ user.username }}
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+
+<div class="box">
+  <h2>➕ Criar Novo Usuário</h2>
+  <form (submit)="registerUser()">
+    <mat-form-field appearance="fill">
+      <mat-label>Usuário</mat-label>
+      <input matInput type="text" [(ngModel)]="registerData.username" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [(ngModel)]="registerData.email" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" [(ngModel)]="registerData.password" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit">Cadastrar</button>
+  </form>
+</div>
+
+<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
