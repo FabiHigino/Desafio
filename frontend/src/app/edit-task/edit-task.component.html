@@ -1,1 +1,26 @@
-<p>edit-task works!</p>
+<mat-card>
+  <mat-card-title>Editar Task</mat-card-title>
+  <form [formGroup]="taskForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Comentários</mat-label>
+      <textarea matInput formControlName="comments"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Horas Trabalhadas</mat-label>
+      <input matInput formControlName="hoursWorked" type="number">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="saveTask()">Salvar</button>
+  </form>
+</mat-card>

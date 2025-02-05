@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent }, // 🔹 Tela principal é Login/Cadastro
+  { path: '', component: LoginComponent },
   { path: 'grade', loadComponent: () => import('./grade/grade.component').then(m => m.GradeComponent) }
 ];
 

@@ -1,1 +1,58 @@
-<p>grade works!</p>
+<div class="container">
+  <h2>Gerenciador de Tasks</h2>
+
+  <!-- Formulário para adicionar/editar tasks -->
+  <div class="add-task-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="saveTask()">
+      {{ editingTask ? 'Editar Task' : 'Adicionar Task' }}
+    </button>
+  </div>
+
+  <!-- Grade de Tasks -->
+  <div class="kanban">
+    <div class="column">
+      <h3>To Do</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'To Do'">
+        <mat-card>
+          <mat-card-title>{{ task?.title }}</mat-card-title>
+          <mat-card-content>{{ task?.description }}</mat-card-content>
+          <mat-card-actions>
+            <button mat-icon-button (click)="editTask(task)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="column">
+      <h3>In Progress</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'In Progress'">
+        <mat-card>
+          <mat-card-title>{{ task?.title }}</mat-card-title>
+          <mat-card-content>{{ task?.description }}</mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="column">
+      <h3>Done</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task?.status === 'Done'">
+        <mat-card>
+          <mat-card-title>{{ task?.title }}</mat-card-title>
+          <mat-card-content>{{ task?.description }}</mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
