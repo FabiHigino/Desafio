@@ -56,9 +56,9 @@ export class GradeComponent implements OnInit {
         console.log('Tasks carregadas:', data);
         this.tasks = data.map(task => ({
           ...task,
-          id: String(task.id), // 🔹 Garante que ID seja uma string
-          comments: task.comments ? task.comments.map(String) : [], // 🔹 Converte tudo para string
-          hoursWorked: task.hoursWorked ? task.hoursWorked.map(String) : [] // 🔹 Converte tudo para string
+          id: String(task.id),
+          comments: task.comments ? task.comments.map(String) : [],
+          hoursWorked: task.hoursWorked ? task.hoursWorked.map(String) : []
         }));
       },
       error: (err) => console.error('Erro ao carregar tasks:', err)
@@ -72,7 +72,7 @@ export class GradeComponent implements OnInit {
         id: '',
         title: this.newTask.title,
         description: this.newTask.description,
-        status: 'To Do',
+        status: 'To Do', // 🔹 Começa sempre na primeira raia
         comments: [],
         hoursWorked: []
       };
@@ -88,26 +88,14 @@ export class GradeComponent implements OnInit {
     }
   }
 
-  // 🔹 Ativa o modo de edição de uma task
-  editTask(task: Task): void {
-    this.editingTask = { ...task }; // 🔹 Clona a task para edição
-  }
+  // 🔹 Move uma task para um novo status
+  moveTask(task: Task, newStatus: string): void {
+    task.status = newStatus;
 
-  // 🔹 Salva a task editada corretamente no array e na API
-  saveTask(): void {
-    if (this.editingTask) {
-      this.http.put(`${this.apiUrl}${this.editingTask.id}/`, this.editingTask).subscribe({
-        next: (updatedTask: Task) => {
-          const index = this.tasks.findIndex(t => t.id === this.editingTask?.id);
-          if (index !== -1) {
-            this.tasks[index] = { ...updatedTask }; // 🔹 Substitui a task editada na lista
-          }
-          this.editingTask = null;
-          console.log('Task atualizada com sucesso!');
-        },
-        error: (err) => console.error('Erro ao atualizar task:', err)
-      });
-    }
+    this.http.put(`${this.apiUrl}${task.id}/`, task).subscribe({
+      next: () => console.log(`Task movida para ${newStatus}`),
+      error: (err) => console.error('Erro ao mover task:', err)
+    });
   }
 
   // 🔹 Adiciona um comentário
@@ -116,12 +104,11 @@ export class GradeComponent implements OnInit {
       task.comments.push(this.newComment);
 
       this.http.put(`${this.apiUrl}${task.id}/`, task).subscribe({
-        next: () => {
-          console.log('Comentário adicionado com sucesso!');
-          this.newComment = ''; // 🔹 Limpa o input
-        },
+        next: () => console.log('Comentário adicionado com sucesso!'),
         error: (err) => console.error('Erro ao adicionar comentário:', err)
       });
+
+      this.newComment = '';
     }
   }
 
@@ -131,12 +118,11 @@ export class GradeComponent implements OnInit {
       task.hoursWorked.push(this.newHours);
 
       this.http.put(`${this.apiUrl}${task.id}/`, task).subscribe({
-        next: () => {
-          console.log('Horas adicionadas com sucesso!');
-          this.newHours = ''; // 🔹 Limpa o input
-        },
+        next: () => console.log('Horas adicionadas com sucesso!'),
         error: (err) => console.error('Erro ao adicionar horas:', err)
       });
+
+      this.newHours = '';
     }
   }
 }

@@ -16,47 +16,44 @@
     <button mat-raised-button color="primary" (click)="addTask()">Adicionar Task</button>
   </div>
 
-  <!-- Lista de Tasks -->
-  <div class="task-list">
-    <mat-card *ngFor="let task of tasks">
-      <mat-card-title>{{ task.title }}</mat-card-title>
-      <mat-card-content>
-        <p>{{ task.description }}</p>
+  <!-- 🔹 Kanban Board -->
+  <div class="kanban">
+    <div class="column">
+      <h3>To Do</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task.status === 'To Do'">
+        <mat-card>
+          <mat-card-title>{{ task.title }}</mat-card-title>
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+            <button mat-button (click)="moveTask(task, 'In Progress')">Mover para In Progress</button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
 
-        <button mat-button (click)="editTask(task)">Editar</button>
+    <div class="column">
+      <h3>In Progress</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task.status === 'In Progress'">
+        <mat-card>
+          <mat-card-title>{{ task.title }}</mat-card-title>
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+            <button mat-button (click)="moveTask(task, 'Done')">Mover para Done</button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
 
-        <!-- 🔹 Se a task estiver em edição, exibir campos editáveis -->
-        <div *ngIf="editingTask && editingTask.id === task.id">
-          <mat-form-field appearance="fill">
-            <mat-label>Novo Título</mat-label>
-            <input matInput [(ngModel)]="editingTask.title">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Nova Descrição</mat-label>
-            <input matInput [(ngModel)]="editingTask.description">
-          </mat-form-field>
-
-          <button mat-raised-button color="accent" (click)="saveTask()">Salvar Alterações</button>
-        </div>
-
-        <!-- 🔹 Seção de Comentários -->
-        <h4>Comentários:</h4>
-        <ul>
-          <li *ngFor="let comment of task.comments">{{ comment }}</li>
-        </ul>
-        <input [(ngModel)]="newComment" placeholder="Adicionar comentário">
-        <button mat-button (click)="addComment(task)">Adicionar</button>
-
-        <!-- 🔹 Seção de Horas Trabalhadas -->
-        <h4>Horas Trabalhadas:</h4>
-        <ul>
-          <li *ngFor="let hour of task.hoursWorked">{{ hour }} horas</li>
-        </ul>
-        <input [(ngModel)]="newHours" placeholder="Horas Trabalhadas">
-        <button mat-button (click)="addHours(task)">Adicionar</button>
-
-      </mat-card-content>
-    </mat-card>
+    <div class="column">
+      <h3>Done</h3>
+      <div class="task" *ngFor="let task of tasks" *ngIf="task.status === 'Done'">
+        <mat-card>
+          <mat-card-title>{{ task.title }}</mat-card-title>
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </div>
